@@ -1,0 +1,3 @@
+= turbo_stream.prepend "todo_items_list" do
+  = render partial: "form", locals: { todo_item: @todo_item, is_new: true }
+    / = turbo_frame_tag todo_items_list

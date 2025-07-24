@@ -1,0 +1,35 @@
+= turbo_frame_tag 'todo_items_filter' do
+
+  .grid.grid-cols-2.sm:flex.sm:flex-wrap.gap-2.mb-6
+    / All items button
+    = link_to todo_items_path, 
+      data: { turbo_stream: true }, 
+      class: "flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 #{@current_filter == 'all' ? 'bg-blue-600 text-white shadow-sm' : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'}" do
+      | All
+      - if @current_filter == 'all'
+        span.ml-2.px-2.py-0.5.bg-blue-500.text-xs.rounded-full
+          = @all_todo_items_count
+    
+    / Pending items button
+    = link_to todo_items_path(status: 'pending'), 
+      data: { turbo_stream: true }, 
+      class: "flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 #{@current_filter == 'pending' ? 'bg-gray-600 text-white shadow-sm' : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'}" do
+      | Pending
+      span.ml-2.px-2.py-0.5.text-xs.rounded-full class=(@current_filter == 'pending' ? 'bg-gray-500' : 'bg-gray-200')
+        = @pending_count
+    
+    / In Progress items button
+    = link_to todo_items_path(status: 'in_progress'), 
+      data: { turbo_stream: true }, 
+      class: "flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 #{@current_filter == 'in_progress' ? 'bg-yellow-600 text-white shadow-sm' : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'}" do
+      | In Progress
+      span.ml-2.px-2.py-0.5.text-xs.rounded-full class=(@current_filter == 'in_progress' ? 'bg-yellow-500' : 'bg-gray-200')
+        = @in_progress_count
+    
+    / Completed items button
+    = link_to todo_items_path(status: 'completed'), 
+      data: { turbo_stream: true }, 
+      class: "flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 #{@current_filter == 'completed' ? 'bg-green-600 text-white shadow-sm' : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'}" do
+      | Completed
+      span.ml-2.px-2.py-0.5.text-xs.rounded-full class=(@current_filter == 'completed' ? 'bg-green-500' : 'bg-gray-200')
+        = @completed_count

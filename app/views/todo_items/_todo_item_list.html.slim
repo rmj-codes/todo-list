@@ -1,0 +1,10 @@
+#todo_items_list
+  - if @todo_item&.new_record?
+    = render 'form', todo_item: @todo_item
+
+  - if @todo_items.any?
+    - @todo_items.each do |todo_item|
+      = render partial: "todo_item", locals: { todo_item: todo_item }
+  - else
+    .text-center.py-12
+      p.text-gray-500.text-lg No todo items found.

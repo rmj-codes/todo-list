@@ -1,0 +1,39 @@
+= turbo_frame_tag dom_id(todo_item) do
+  - if params[:edit] == todo_item.id.to_s
+    = render 'form', todo_item: todo_item
+  - else
+    div class="w-full my-5 p-4 border rounded-lg #{status_card_color(todo_item.status)}"
+      .flex.flex-col.sm:flex-row.justify-between.items-start
+        .flex-1.mb-4.sm:mb-0.sm:mr-4
+          .mb-3
+            strong.block.font-medium.mb-1.text-lg Title:
+            p class=('line-through text-gray-500' if todo_item.completed?)
+              = todo_item.title
+          - if todo_item.description.present?
+            .mb-3
+              strong.block.font-medium.mb-1 Description:
+              p class=('line-through text-gray-500' if todo_item.completed?)
+                = todo_item.description
+          div
+            span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium #{status_badge_color(todo_item.status)}"
+              = todo_item.status.humanize
+        .flex.flex-col.sm:flex-row.space-y-2.sm:space-y-0.sm:space-x-2.flex-shrink-0
+          = link_to edit_todo_item_path(todo_item), data: { turbo_stream: true, turbo_frame: dom_id(todo_item) }, class: "inline-flex items-center justify-center p-2 rounded-md bg-blue-600 hover:bg-blue-500 text-white transition-colors duration-200", title: "Edit Task" do
+            svg.w-5.h-5 fill="none" stroke="currentColor" viewbox="0 0 24 24"
+              path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+
+          - if todo_item.pending?
+            = button_to change_status_todo_item_path(todo_item, status: 'in_progress', current_filter: @current_filter), method: :patch, class: "inline-flex items-center justify-center p-2 rounded-md bg-yellow-600 hover:bg-yellow-500 text-white transition-colors duration-200", title: "Start Task" do
+              svg.w-5.h-5 fill="none" stroke="currentColor" viewbox="0 0 24 24"
+                path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3l14 9-14 9V3z"
+          - elsif todo_item.in_progress?
+            = button_to change_status_todo_item_path(todo_item, status: 'completed', current_filter: @current_filter), method: :patch, class: "inline-flex items-center justify-center p-2 rounded-md bg-green-600 hover:bg-green-500 text-white transition-colors duration-200", title: "Complete Task" do
+              svg.w-5.h-5 fill="none" stroke="currentColor" viewbox="0 0 24 24"
+                path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"
+          - else
+            = button_to change_status_todo_item_path(todo_item, status: 'pending', current_filter: @current_filter), method: :patch, class: "inline-flex items-center justify-center p-2 rounded-md bg-blue-600 hover:bg-blue-500 text-white transition-colors duration-200", title: "Restart Task" do
+              svg.w-5.h-5 fill="none" stroke="currentColor" viewbox="0 0 24 24"
+                path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+          = button_to todo_item, method: :delete, class: "inline-flex items-center justify-center p-2 rounded-md bg-red-600 hover:bg-red-500 text-white transition-colors duration-200", title: "Delete Task", data: { turbo_confirm: "Are you sure?" } do
+            svg.w-5.h-5 fill="none" stroke="currentColor" viewbox="0 0 24 24"
+              path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"

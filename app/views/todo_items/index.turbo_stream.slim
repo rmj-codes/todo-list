@@ -1,0 +1,10 @@
+
+= turbo_stream.replace 'todo_items_list' do
+  = render 'todo_items/todo_item_list'
+
+= turbo_stream.replace 'todo_items_filter' do
+  = render 'status_filter', current_filter: @current_filter,
+    in_progress_count: @in_progress_count,
+    completed_count: @completed_count,
+    all_todo_items_count: @all_todo_items_count,
+    pending_count: @pending_count

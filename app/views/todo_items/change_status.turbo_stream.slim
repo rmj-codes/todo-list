@@ -1,0 +1,9 @@
+= turbo_stream.replace dom_id(@todo_item) do
+  = render "todo_items/todo_item", todo_item: @todo_item
+
+= turbo_stream.replace 'todo_items_filter' do
+  = render 'status_filter',
+    in_progress_count: @in_progress_count,
+    completed_count: @completed_count,
+    all_todo_items_count: @all_todo_items_count,
+    pending_count: @pending_count
